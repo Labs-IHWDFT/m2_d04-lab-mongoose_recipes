@@ -20,7 +20,7 @@ We've learned how to use Mongoose to create Schemas and then interact with our M
   ```
   git add .
   git commit -m "Completed lab"
-  git push origin master
+  git push origin main
   ```
 
 - Create Pull Request so your TAs can check up your work.
