@@ -19,7 +19,7 @@ let newRecipe = {
 	creator: 'JOC'
 };
 
-const MONGODB_URI = 'mongodb://localhost:27017/recipe-app';
+const MONGODB_URI = process.env. MGDB_URI || 'mongodb://localhost:27017/recipe-app';
 
 
 // Connection to the database "recipe-app"
@@ -28,38 +28,29 @@ mongoose
   .then(self => {
     console.log(`Connected to the database: "${self.connection.name}"`);
   })
-  .then(() => {
-	  return Recipe.deleteMany()
-    })
-	
-// iteration 2
   .then(async () => {
-	  const result = await Recipe.create(newRecipe);
-	  return console.log(`recipe added: ${result.title}`);
-    })
+	  await Recipe.deleteMany()
+
+// iteration 2
+	  const createResult = await Recipe.create(newRecipe);
+	  console.log(`recipe added: ${createResult.title}`);
 
 // iteration 3
-	.then(async () => {
-	  const result = await Recipe.insertMany(data);
-	  result.forEach((item) => {
-		  console.log(`recipe for ${item.title} inserted successfully`);
+	  const insertResult = await Recipe.insertMany(data);
+	  insertResult.forEach((recipe) => {
+		  console.log(`Recipe for ${recipe.title} inserted successfully`);
 	  });
-    })
   
 // iteration 4
-  .then (async () => {
 	  await Recipe.updateOne({ title: 'Rigatoni alla Genovese' }, { duration: 100 });
-	  return console.log(`The recipe is updated`);
-    })
+	  console.log(`The recipe Rigatoni alla Genovese is updated`);
   
 // iteration 5
-  .then(async () => {
 	  await Recipe.deleteOne({ title: 'Carrot Cake' });
-	  return console.log(`The recipe is deleted`);
+	  console.log(`The recipe for Carrot Cake is deleted`);
     })
 
 // iteration 6
-
   .then(() => {
 	  console.log(`Disconnecting from the database... `);
 	  mongoose.connection.close((error) => {
@@ -68,4 +59,3 @@ mongoose
 			}
 		});
     })
-	
